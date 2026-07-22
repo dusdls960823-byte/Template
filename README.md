@@ -6,7 +6,7 @@
 
 ## 📂 파일 구조 (File Structure)
 
-```text
+```text```
 your-project-folder/
 │
 ├── index.js              # 봇 메인 진입점 및 슬래시 명령어 등록
