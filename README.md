@@ -6,7 +6,7 @@
 
 ## 📂 파일 구조 (File Structure)
 
-```text```
+```text
 your-project-folder/
 │
 ├── index.js              # 봇 메인 진입점 및 슬래시 명령어 등록
@@ -14,7 +14,7 @@ your-project-folder/
 └── handlers/
     ├── commands.js       # 일반 명령어 (출석, 포인트, 랭킹, 서버정보, 공지, 추첨)
     └── dice.js           # 주사위 굴리기 및 1:1 PVP 대결 모듈
-
+```
 
 ## 💻 명령어 사용법 (Usage)
 
