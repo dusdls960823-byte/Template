@@ -1,6 +1,8 @@
+require('dotenv').config();
 const { Client, Intents, REST, Routes } = require('discord.js');
 const { handleCommand } = require('./handlers/commands');
 const { handleDiceCommand } = require('./handlers/dice');
+const { handleAdminCommand } = require('./handlers/admin');
 
 const client = new Client({ 
     intents: [ 
@@ -10,7 +12,12 @@ const client = new Client({
     ] 
 });
 
-const TOKEN = 'YOUR_BOT_TOKEN_HERE';
+const TOKEN = process.env.TOKEN;
+
+if (!TOKEN) {
+    console.error("❌ 오류: BOT TOKEN이 설정되지 않았습니다. .env 파일을 확인해주세요.");
+    process.exit(1);
+}
 
 // 슬래시 명령어 구조 전체 정의
 const commandsData = [
@@ -51,6 +58,30 @@ const commandsData = [
                         description: '걸 포인트를 입력하세요.',
                         required: true
                     }
+                ]
+            }
+        ]
+    },
+    {
+        name: '포인트관리',
+        description: '(관리자용) 특정 유저의 포인트를 지급하거나 차감합니다.',
+        options: [
+            {
+                name: '지급',
+                type: 1,
+                description: '특정 유저에게 포인트를 지급합니다.',
+                options: [
+                    { name: '유저', type: 6, description: '포인트를 받을 유저', required: true },
+                    { name: '포인트', type: 4, description: '지급할 포인트 양', required: true }
+                ]
+            },
+            {
+                name: '차감',
+                type: 1,
+                description: '특정 유저의 포인트를 차감합니다.',
+                options: [
+                    { name: '유저', type: 6, description: '포인트를 차감할 유저', required: true },
+                    { name: '포인트', type: 4, description: '차감할 포인트 양', required: true }
                 ]
             }
         ]
@@ -100,6 +131,8 @@ client.on('interactionCreate', async interaction => {
 
     if (interaction.commandName === '주사위') {
         await handleDiceCommand(interaction);
+    } else if (interaction.commandName === '포인트관리') {
+        await handleAdminCommand(interaction);
     } else {
         await handleCommand(interaction);
     }

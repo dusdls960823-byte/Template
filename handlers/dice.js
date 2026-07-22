@@ -30,7 +30,6 @@ async function handleDiceCommand(interaction) {
         db[userId] = { score: 0, lastCheckIn: "" };
     }
 
-    // [1] 기본 주사위 굴리기 (/주사위 굴리기 [포인트])
     if (subCommand === '굴리기') {
         const betPoint = interaction.options.getInteger('포인트') || 0;
 
@@ -41,16 +40,16 @@ async function handleDiceCommand(interaction) {
             db[userId].score -= betPoint;
         }
 
-        const myRoll = Math.floor(Math.random() * 6) + 1; // 1~6 무작위
+        const myRoll = Math.floor(Math.random() * 6) + 1;
         let resultText = "";
         let earned = 0;
 
         if (betPoint > 0) {
-            if (myRoll >= 4) { // 4, 5, 6 승리 (2배 환급)
+            if (myRoll >= 4) {
                 earned = betPoint * 2;
                 db[userId].score += earned;
                 resultText = `🎉 성공! (4~6)\n베팅하신 포인트의 2배인 **+${earned}점**을 획득하셨습니다!`;
-            } else { // 1, 2, 3 패배
+            } else {
                 resultText = `😢 실패! (1~3)\n베팅하신 포인트 **${betPoint}점**을 잃었습니다.`;
             }
         } else {
@@ -72,7 +71,6 @@ async function handleDiceCommand(interaction) {
         return interaction.reply({ embeds: [embed] });
     }
 
-    // [2] PVP 대결 신청 (/주사위 대결 [상대] [포인트])
     if (subCommand === '대결') {
         const targetUser = interaction.options.getUser('상대');
         const betPoint = interaction.options.getInteger('포인트');

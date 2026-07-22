@@ -24,7 +24,6 @@ function saveData(data) {
 async function handleCommand(interaction) {
     const { commandName } = interaction;
 
-    // 1. 명령어 도움말
     if (commandName === '명령어') {
         const embed = new MessageEmbed()
             .setTitle('🎉 커뮤니티 이벤트 & 활성화 봇 명령어')
@@ -37,6 +36,7 @@ async function handleCommand(interaction) {
                 { name: '/서버정보', value: '현재 서버의 상세 정보를 확인합니다.', inline: false },
                 { name: '/주사위 굴리기 [포인트]', value: '1~6 주사위를 굴리고 포인트를 겁니다!', inline: false },
                 { name: '/주사위 대결 [상대] [포인트]', value: '다른 유저와 포인트를 걸고 1:1 대결을 합니다!', inline: false },
+                { name: '/포인트관리 [지급/차감] [유저] [포인트]', value: '(관리자용) 유저의 포인트를 조작합니다.', inline: false },
                 { name: '/추첨 [상품]', value: '(관리자용) 현재 채널에서 랜덤으로 당첨자를 뽑습니다.', inline: false },
                 { name: '/공지 [내용]', value: '(관리자용) 멋진 임베드 공지를 보냅니다.', inline: false }
             )
@@ -45,7 +45,6 @@ async function handleCommand(interaction) {
         return interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    // 2. 출석 체크 기능
     if (commandName === '출석체크') {
         const userId = interaction.user.id;
         const today = new Date().toDateString();
@@ -75,7 +74,6 @@ async function handleCommand(interaction) {
         return interaction.reply({ embeds: [embed] });
     }
 
-    // 3. 포인트 확인 기능
     if (commandName === '포인트') {
         const userId = interaction.user.id;
         const db = loadData();
@@ -89,7 +87,6 @@ async function handleCommand(interaction) {
         return interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    // 4. 랭킹 확인 기능
     if (commandName === '랭킹') {
         const db = loadData();
         const entries = Object.entries(db);
@@ -119,7 +116,6 @@ async function handleCommand(interaction) {
         return interaction.reply({ embeds: [embed] });
     }
 
-    // 5. 서버 정보 확인 기능
     if (commandName === '서버정보') {
         const { guild } = interaction;
         const createdTimestamp = Math.floor(guild.createdTimestamp / 1000);
@@ -140,7 +136,6 @@ async function handleCommand(interaction) {
         return interaction.reply({ embeds: [embed] });
     }
 
-    // 6. 랜덤 추첨 이벤트 기능 (관리자 전용)
     if (commandName === '추첨') {
         if (!interaction.member.permissions.has('ADMINISTRATOR')) {
             return interaction.reply({ content: "❌ 이 명령어는 관리자만 사용할 수 있습니다.", ephemeral: true });
@@ -166,7 +161,6 @@ async function handleCommand(interaction) {
         return interaction.channel.send({ embeds: [embed] });
     }
 
-    // 7. 관리자 공지 전송 기능
     if (commandName === '공지') {
         if (!interaction.member.permissions.has('ADMINISTRATOR')) {
             return interaction.reply({ content: "❌ 이 명령어는 관리자만 사용할 수 있습니다.", ephemeral: true });
